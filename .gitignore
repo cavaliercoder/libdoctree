@@ -22,3 +22,5 @@ stamp-h1
 *.Plo
 *.dylib
 *.so
+*.tar.gz
+example/example

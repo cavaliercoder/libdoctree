@@ -78,7 +78,7 @@ DTchildCount(DTnode *node)
 	int		n = 0;
 	DTnode	**child = NULL;
 
-	for (child = node->children; *child; child++)
+	for (child = node->children; child && *child; child++)
 		n++;
 
 	return n;
@@ -95,9 +95,9 @@ DTfreeNode(DTnode *node)
 	if (NULL == node)
 		return;
 
-	for (child = node->children; *child; child++)
+	for (child = node->children; child && *child; child++)
 		DTfreeNode(*child);
-
+		
 	free(node->label);	
 	free(node);
 }

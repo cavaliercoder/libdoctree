@@ -1,7 +1,8 @@
 lib_LTLIBRARIES = libdoctree.la
 
 libdoctree_la_SOURCES = \
-	libdoctree.c
+	libdoctree.c \
+	xml.c
 
 libdoctree_la_CFLAGS = \
 	-I../include

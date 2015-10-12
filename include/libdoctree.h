@@ -1,6 +1,8 @@
 #ifndef LIBDOCTREE_H
 #define LIBDOCTREE_H
 
+#include <stdio.h>
+
 #ifdef UNICODE
 typedef wchar_t DTchar;
 #else
@@ -25,5 +27,8 @@ DTnode	*DTnewNode(DTnode *parent, const DTchar *label, int flags);
 int		DTappendNode(DTnode *parent, DTnode *child);
 int		DTchildCount(DTnode *node);
 void	DTfreeNode(DTnode *node);
+
+
+void	DTprintXml(FILE *f, DTnode *node);
 
 #endif // LIBDOCTREE_H
