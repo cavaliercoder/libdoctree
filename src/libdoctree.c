@@ -5,7 +5,7 @@
  * Allocate a new node. Returns NULL if out of memory.
  */
 DTnode *
-DTnewNode(DTnode *parent, const DTchar *label)
+DTnewNode(DTnode *parent, const DTchar *label, int flags)
 {
 	DTnode	*node = NULL;
 	int		appendResult = 0;
@@ -15,6 +15,8 @@ DTnewNode(DTnode *parent, const DTchar *label)
 	if (NULL == node) {
 		return NULL;
 	}
+
+	node->flags = flags;
 
 	// duplicate and assign label
 	node->label = DTstrdup(label);
@@ -76,8 +78,26 @@ DTchildCount(DTnode *node)
 	int		n = 0;
 	DTnode	**child = NULL;
 
-	for (child = node->children; NULL != child; child++)
+	for (child = node->children; *child; child++)
 		n++;
 
 	return n;
+}
+
+/*
+ * Free a node and all of its descendants.
+ */
+void
+DTfreeNode(DTnode *node)
+{
+	DTnode **child = NULL;
+
+	if (NULL == node)
+		return;
+
+	for (child = node->children; *child; child++)
+		DTfreeNode(*child);
+
+	free(node->label);	
+	free(node);
 }
