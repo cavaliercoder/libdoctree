@@ -13,9 +13,10 @@ main(int argc, const char* argv[])
 	DTnewNode(node, "grandchild1", 0);
 	
 	node = DTnewNode(doc, "child2", 0);
-	DTnewNode(node, "grandchild2", 0);
+	node = DTnewNode(node, "grandchild2", 0);
+	node = DTnewNode(node, "great-grandchild2", 0);
 
-	DTprintXml(stdout, doc);
+	DTprintJson(stdout, doc, 0);
 
 	DTfreeNode(doc);
 }

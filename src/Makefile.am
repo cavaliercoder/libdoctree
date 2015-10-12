@@ -2,6 +2,7 @@ lib_LTLIBRARIES = libdoctree.la
 
 libdoctree_la_SOURCES = \
 	libdoctree.c \
+	json.c \
 	xml.c
 
 libdoctree_la_CFLAGS = \

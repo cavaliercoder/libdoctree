@@ -2,7 +2,7 @@
 #include "libdoctree.h"
 
 static void
-DTprintXmlNode(FILE *f, DTnode *node, int indent)
+DTprintXmlNode(FILE *f, DTnode *node, int flags, int indent)
 {
 	int i = 0;
 	DTnode **child = NULL;
@@ -13,7 +13,7 @@ DTprintXmlNode(FILE *f, DTnode *node, int indent)
 	fprintf(f, "<%s>\n", node->label);
 
 	for (child = node->children; child && *child; child++)
-		DTprintXmlNode(f, *child, indent+1);
+		DTprintXmlNode(f, *child, flags, indent + 1);
 	
 	for (i = 0; i < indent; i++)
 		fprintf(f, "  ");
@@ -22,7 +22,7 @@ DTprintXmlNode(FILE *f, DTnode *node, int indent)
 }
 
 void
-DTprintXml(FILE *f, DTnode *node)
+DTprintXml(FILE *f, DTnode *node, int flags)
 {
-	DTprintXmlNode(f, node, 0);
+	DTprintXmlNode(f, node, flags, 0);
 }

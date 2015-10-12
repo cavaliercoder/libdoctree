@@ -28,7 +28,7 @@ int		DTappendNode(DTnode *parent, DTnode *child);
 int		DTchildCount(DTnode *node);
 void	DTfreeNode(DTnode *node);
 
-
-void	DTprintXml(FILE *f, DTnode *node);
+void	DTprintXml(FILE *f, DTnode *node, int flags);
+void	DTprintJson(FILE *f, DTnode *node, int flags);
 
 #endif // LIBDOCTREE_H
