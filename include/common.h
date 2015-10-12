@@ -2,7 +2,7 @@
 #define COMMON_H
 
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #ifdef UNICODE
 #define DTstrdup	wcsdup
