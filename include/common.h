@@ -1,6 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+// ignore deprecated posix functions on Windows
+#define _CRT_NONSTDC_NO_DEPRECATE
+
 #include "libdoctree.h"
 
 #include <stdlib.h>
@@ -16,12 +19,7 @@
 #define DTfprintf	fwprintf
 #define DTstrlen	wcslen
 #define DTstrcmp	wcscmp
-
-#ifndef _wcsdup
-#define _wcsdup		wcsdup
-#endif 
-
-#define DTstrdup	_wcsdup
+#define DTstrdup	wcsdup
 
 #else // !UNICODE
 
@@ -32,12 +30,7 @@
 #define DTfprintf	fprintf
 #define DTstrlen	strlen
 #define DTstrcmp	strcmp
-
-#ifndef _strdup
-#define _strdup		strdup
-#endif 
-
-#define DTstrdup	_strdup
+#define DTstrdup	strdup
 
 #endif // UNICODE
 
