@@ -37,6 +37,7 @@ int				DTattCount(DTnode *node);
 int				DTappendAtt(DTnode *node, DTattribute *att);
 DTattribute		*DTgetAtt(DTnode *node, const DTchar *key);
 int				DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags);
+#define			DTsetAttArray(node, key, val, flags)	DTsetAtt(node, key, val, DTATT_ARRAY | flags)
 
 void			DTprintXml(FILE *f, DTnode *node, int flags);
 void			DTprintJson(FILE *f, DTnode *node, int flags);
@@ -47,6 +48,7 @@ void			DTprintJson(FILE *f, DTnode *node, int flags);
 
 // attribute flags
 #define DTATT_DEFAULT		0x0
+#define DTATT_ARRAY			0x1 // attribute is a multistring array
 
 // output flags
 #define DTOUT_DEFAULT		0x0

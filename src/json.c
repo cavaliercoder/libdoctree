@@ -5,6 +5,9 @@
 #define JS_INDENT		_T("  ")
 #define JS_NEWLINE		_T("\n")
 
+/*
+ * Print a JSON key name or value and naively escape illegal characters.
+ */
 static void
 DTprintJsonValue(FILE *f, DTchar *val)
 {
@@ -33,11 +36,15 @@ DTprintJsonValue(FILE *f, DTchar *val)
 	}
 }
 
+/*
+ * Print a nodes attributes as a JSON formatted document.
+ */
 static void
 DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 {
 	int			i = 0;
 	DTattribute	**att = NULL;
+	DTchar		*c, *n;
 
 	for (att = node->attributes; att && *att; att++) {
 		// print line indent
@@ -55,9 +62,24 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 			DTfprintf(f, _T(" "));
 
 		// print attribute value
-		if (NULL == (*att)->value)
+		if (NULL == (*att)->value) { // null values
 			DTfprintf(f, _T("null"));
-		else {
+		} else if (0 != ((*att)->flags & DTATT_ARRAY)) { // multi-string array
+			DTfprintf(f, _T("["));
+			for (c = (*att)->value, n = c + DTstrlen(c) + 1; *c; c = n, n += DTstrlen(n) + 1) {
+				DTfprintf(f, "\"");
+				DTprintJsonValue(f, c);
+				DTfprintf(f, "\"");
+
+				if (*n) {
+					DTfprintf(f, ",");
+					if (0 != (flags & DTOUT_WHITESPACE))
+						DTfprintf(f, _T(" "));
+				}
+			}
+
+			DTfprintf(f, _T("]"));
+		} else { // standard value
 			DTfprintf(f, _T("\""));
 			DTprintJsonValue(f, (*att)->value);
 			DTfprintf(f, _T("\""));
@@ -73,6 +95,10 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 	}
 }
 
+/*
+ * Print a node and its descendants to the given file descriptor as a JSON
+ * formatted document with the given indentation.
+ */
 static void
 DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 {

@@ -28,7 +28,11 @@ DTnewAtt(const DTchar *key, const DTchar *val, int flags)
 	if (NULL == val)
 		att->value = NULL;
 	else {
-		att->value = DTstrdup(val);
+		if (0 == (flags & DTATT_ARRAY))
+			att->value = DTstrdup(val);
+		else
+			att->value = DTmstrdup(val);
+
 		if (NULL == att->value) {
 			DTfreeAtt(att);
 			return NULL;
@@ -152,7 +156,11 @@ DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 		att->value = NULL;
 
 		if (NULL != val) {
-			att->value = DTstrdup(val);
+			if (0 == (att->flags & DTATT_ARRAY))
+				att->value = DTstrdup(val);
+			else
+				att->value = DTmstrdup(val);
+
 			if (NULL == att->value)
 				return -1;			
 		}
