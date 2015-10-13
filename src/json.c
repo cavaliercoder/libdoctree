@@ -98,6 +98,7 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 	else
 		DTfprintf(f, _T("}"));
 }
+
 /*
  * Print a node and its descendants to the given file descriptor as a JSON
  * formatted document.

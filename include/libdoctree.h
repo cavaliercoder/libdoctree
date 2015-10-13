@@ -24,13 +24,13 @@ typedef struct _DTattribute {
 } DTattribute;
 
 DTnode			*DTnewNode(DTnode *parent, const DTchar *label, int flags);
+void			DTfreeNode(DTnode *node);
 int				DTappendNode(DTnode *parent, DTnode *child);
 int				DTchildCount(DTnode *node);
-void			DTfreeNode(DTnode *node);
 int				DTnodeHasChildren(DTnode *node);
 
 DTattribute		*DTnewAtt(const DTchar *key, const DTchar *val, int flags);
-void			*DTfreeAtt(DTattribute *att);
+void			DTfreeAtt(DTattribute *att);
 int				DTattCount(DTnode *node);
 int				DTappendAtt(DTnode *node, DTattribute *att);
 DTattribute		*DTgetAtt(DTnode *node, const DTchar *key);

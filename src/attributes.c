@@ -42,7 +42,7 @@ DTnewAtt(const DTchar *key, const DTchar *val, int flags)
  * Free an attribute.
  * The attribute is not removed from the parent by this function.
  */
-void*
+void
 DTfreeAtt(DTattribute *att)
 {
 	if (NULL == att)
