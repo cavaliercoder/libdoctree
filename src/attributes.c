@@ -102,6 +102,8 @@ DTappendAtt(DTnode *node, DTattribute *att)
 	node->attributes[attCount] = att;
 	node->attributes[attCount + 1] = NULL;
 
+	att->parent = node;
+
 	return attCount + 1;
 }
 

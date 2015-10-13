@@ -19,6 +19,7 @@ typedef struct _DTnode {
 
 typedef struct _DTattribute {
 	DTchar				*key;
+	DTnode				*parent;
 	DTchar				*value;
 	int					flags;
 } DTattribute;
