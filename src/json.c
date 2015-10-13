@@ -14,11 +14,11 @@ DTprintJsonValue(FILE *f, DTchar *val)
 	for (; val && *val; val++) {
 		switch (*val) {
 			case '"':
-				DTfprintf(f, _T("\\\""));
+				DTfputs(_T("\\\""), f);
 				break;
 
 			case '\\':
-				DTfprintf(f, _T("\\\\"));
+				DTfputs(_T("\\\\"), f);
 				break;
 
 			case '\r':
@@ -26,11 +26,15 @@ DTprintJsonValue(FILE *f, DTchar *val)
 				break;
 
 			case '\n':
-				DTfprintf(f, _T("\\n"));
+				DTfputs(_T("\\n"), f);
 				break;
 
 			default:
-				DTfprintf(f, _T("%c"), *val);
+#ifdef _UNICODE
+				fputwc(*val, f);
+#else
+				fputc(*val, f);
+#endif
 				break;
 		}
 	}
@@ -50,48 +54,48 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 		// print line indent
 		if (0 != (flags & DTOUT_WHITESPACE))
 			for (i = 0; i < indent + 1; i++)
-				DTfprintf(f, _T("  "));
+				DTfputs(_T("  "), f);
 
 		// print attribute name
-		DTfprintf(f, _T("\""));
+		DTfputs(_T("\""), f);
 		DTprintJsonValue(f, (*att)->key);
-		DTfprintf(f, _T("\":"));
+		DTfputs(_T("\":"), f);
 
 		// print space after attribute name
 		if (0 != (flags & DTOUT_WHITESPACE))
-			DTfprintf(f, _T(" "));
+			DTfputs(_T(" "), f);
 
 		// print attribute value
 		if (NULL == (*att)->value) { // null values
-			DTfprintf(f, _T("null"));
+			DTfputs(_T("null"), f);
 		} else if (0 != ((*att)->flags & DTATT_ARRAY)) { // multi-string array
-			DTfprintf(f, _T("["));
+			DTfputs(_T("["), f);
 			for (c = (*att)->value, n = c + DTstrlen(c) + 1; *c; c = n, n += DTstrlen(n) + 1) {
-				DTfprintf(f, _T("\""));
+				DTfputs(_T("\""), f);
 				DTprintJsonValue(f, c);
-				DTfprintf(f, _T("\""));
+				DTfputs(_T("\""), f);
 
 				if (*n) {
-					DTfprintf(f, _T(","));
+					DTfputs(_T(","), f);
 					if (0 != (flags & DTOUT_WHITESPACE))
-						DTfprintf(f, _T(" "));
+						DTfputs(_T(" "), f);
 				}
 			}
 
-			DTfprintf(f, _T("]"));
+			DTfputs(_T("]"), f);
 		} else { // standard value
-			DTfprintf(f, _T("\""));
+			DTfputs(_T("\""), f);
 			DTprintJsonValue(f, (*att)->value);
-			DTfprintf(f, _T("\""));
+			DTfputs(_T("\""), f);
 		}
 
 		// print comma
 		if (NULL != *(att + 1) || 0 < DTchildCount(node))
-			DTfprintf(f, _T(","));
+			DTfputs(_T(","), f);
 
 		// print line break
 		if (0 != (flags & DTOUT_WHITESPACE))
-			DTfprintf(f, JS_NEWLINE);
+			DTfputs(JS_NEWLINE, f);
 	}
 }
 
@@ -107,13 +111,13 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 
 	// print object start
 	if (0 != (node->flags & DTNODE_ARRAY))
-		DTfprintf(f, _T("["));
+		DTfputs(_T("["), f);
 	else
-		DTfprintf(f, _T("{"));
+		DTfputs(_T("{"), f);
 
 	// print new line after object start
 	if (0 != (flags & DTOUT_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
-		DTfprintf(f, JS_NEWLINE);
+		DTfputs(JS_NEWLINE, f);
 
 	// print attributes for objects
 	if (0 == (node->flags & DTNODE_ARRAY))
@@ -124,17 +128,17 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 		// print line indent
 		if (0 != (flags & DTOUT_WHITESPACE))
 			for (i = 0; i < indent + 1; i++)
-				DTfprintf(f, _T("  "));
+				DTfputs(_T("  "), f);
 
 		if (0 == (node->flags & DTNODE_ARRAY)) {
 			// print object name
-			DTfprintf(f, _T("\""));
+			DTfputs(_T("\""), f);
 			DTprintJsonValue(f, (*child)->label);
-			DTfprintf(f, _T("\":"));
+			DTfputs(_T("\":"), f);
 
 			// print space after node name
 			if (0 != (flags & DTOUT_WHITESPACE))
-				DTfprintf(f, _T(" "));
+				DTfputs(_T(" "), f);
 		}
 
 		// print child body
@@ -142,23 +146,23 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 
 		// print comma
 		if (NULL != *(child + 1))
-			DTfprintf(f, _T(","));
+			DTfputs(_T(","), f);
 
 		// print line break
 		if (0 != (flags & DTOUT_WHITESPACE))
-			DTfprintf(f, JS_NEWLINE);
+			DTfputs(JS_NEWLINE, f);
 	}
 	
 	// print indent before object end
 	if (0 != (flags & DTOUT_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
 		for (i = 0; i < indent; i++)
-			DTfprintf(f, _T("  "));
+			DTfputs(_T("  "), f);
 
 	// print object end
 	if (0 != (node->flags & DTNODE_ARRAY))
-		DTfprintf(f, _T("]"));
+		DTfputs(_T("]"), f);
 	else
-		DTfprintf(f, _T("}"));
+		DTfputs(_T("}"), f);
 }
 
 /*
@@ -175,5 +179,5 @@ DTprintJson(FILE *f, DTnode *node, int flags)
 	DTprintJsonNode(f, node, flags, 0);
 
 	// always end with a new line
-	DTfprintf(f, JS_NEWLINE);
+	DTfputs(JS_NEWLINE, f);
 }

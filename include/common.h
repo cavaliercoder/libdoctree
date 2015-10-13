@@ -16,6 +16,7 @@
 #define _T(s)		L ## s
 #endif
 
+#define DTfputs		fputws
 #define DTfprintf	fwprintf
 #define DTstrlen	wcslen
 #define DTstrcmp	wcscmp
@@ -27,6 +28,7 @@
 #define _T(s)		s
 #endif
 
+#define DTfputs		fputs
 #define DTfprintf	fprintf
 #define DTstrlen	strlen
 #define DTstrcmp	strcmp
