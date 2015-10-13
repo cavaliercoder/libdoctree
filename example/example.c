@@ -28,6 +28,8 @@ main(int argc, const char* argv[])
 	DTsetAtt(node, "OverwriteTest", "Updated value", 0);
 	DTsetAtt(node, "OverwriteTest", "Final value", 0);
 
+	DTsetAtt(node, "NullTest", NULL, 0);
+
 	DTprintJson(stdout, doc, 0);
 
 	DTfreeNode(doc);

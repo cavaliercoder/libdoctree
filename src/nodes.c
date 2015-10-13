@@ -2,12 +2,16 @@
 #include "libdoctree.h"
 
 /*
- * Allocate a new node. Returns NULL if out of memory.
+ * Allocate a new node. Returns NULL on error;
  */
 DTnode *
 DTnewNode(DTnode *parent, const DTchar *label, int flags)
 {
 	DTnode	*node = NULL;
+
+	// label must not be NULL or empty
+	if (NULL == label || '\0' == *label)
+		return NULL;
 
 	// allocate
 	node = DTalloc(NULL, sizeof(DTnode));

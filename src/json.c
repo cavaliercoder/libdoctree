@@ -17,7 +17,10 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 		for (i = 0; i < indent + 1; i++)
 			DTfprintf(f, _T("  "));
 
-		DTfprintf(f, _T("\"%s\": \"%s\"\n"), (*att)->key, (*att)->value);
+		if (NULL == (*att)->value)
+			DTfprintf(f, _T("\"%s\": null\n"), (*att)->key);
+		else
+			DTfprintf(f, _T("\"%s\": \"%s\"\n"), (*att)->key, (*att)->value);
 	}
 
 	for (child = node->children; child && *child; child++)

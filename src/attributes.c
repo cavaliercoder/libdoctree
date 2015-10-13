@@ -2,12 +2,16 @@
 #include "libdoctree.h"
 
 /*
- * Allocate a new node. Returns NULL if out of memory.
+ * Allocate a new node. Returns NULL on error.
  */
 DTattribute*
 DTnewAtt(const DTchar *key, const DTchar *val, int flags)
 {
 	DTattribute	*att = NULL;
+
+	// key must not be NULL or empty
+	if (NULL == key || '\0' == *key)
+		return NULL;
 
 	att = DTalloc(NULL, sizeof(DTattribute));
 	if (NULL == att)
@@ -21,10 +25,14 @@ DTnewAtt(const DTchar *key, const DTchar *val, int flags)
 		return NULL;
 	}
 
-	att->value = DTstrdup(val);
-	if (NULL == att->value) {
-		DTfreeAtt(att);
-		return NULL;
+	if (NULL == val)
+		att->value = NULL;
+	else {
+		att->value = DTstrdup(val);
+		if (NULL == att->value) {
+			DTfreeAtt(att);
+			return NULL;
+		}
 	}
 
 	return att;
@@ -137,10 +145,15 @@ DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 		// update existing attribute
 		att->flags = flags;
 		
-		DTfree(att->value);
-		att->value = DTstrdup(val);
-		if (NULL == att->value)
-			return -1;
+		if (NULL != att->value)
+			DTfree(att->value);
+		att->value = NULL;
+
+		if (NULL != val) {
+			att->value = DTstrdup(val);
+			if (NULL == att->value)
+				return -1;			
+		}
 
 		count = DTattCount(node);
 	}
