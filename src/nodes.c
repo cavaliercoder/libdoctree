@@ -4,7 +4,7 @@
 /*
  * Allocate a new node. Returns NULL on error;
  */
-DTnode *
+DTnode*
 DTnewNode(DTnode *parent, const DTchar *label, int flags)
 {
 	DTnode	*node = NULL;

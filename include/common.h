@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef UNICODE
+#ifdef _UNICODE
 
 #ifndef _T
 #define _T(s)		L ## s
@@ -15,8 +15,8 @@
 
 #define DTfprintf	fwprintf
 #define DTstrlen	wcslen
-#define DTstrdup	wcsdup
 #define DTstrcmp	wcscmp
+#define DTstrdup	_wcsdup
 
 #else // !UNICODE
 
@@ -26,8 +26,8 @@
 
 #define DTfprintf	fprintf
 #define DTstrlen	strlen
-#define DTstrdup	strdup
 #define DTstrcmp	strcmp
+#define DTstrdup	_strdup
 
 #endif // UNICODE
 

@@ -3,6 +3,14 @@
 
 #include "libdoctree.h"
 
+#ifndef _T
+#ifdef _UNICODE
+#define _T(s)		L ## s
+#else
+#define _T(s)		s
+#endif
+#endif
+
 static void
 usage(FILE *f)
 {
@@ -21,84 +29,84 @@ main(int argc, const char* argv[])
 	}
 
 	// Adam
-	adam = DTnewNode(NULL, "root", DTNODE_DEFAULT);
-	DTsetAtt(adam, "Name", "Adam", DTATT_DEFAULT);
-	DTsetAtt(adam, "Gender", "Male", DTATT_DEFAULT);
+	adam = DTnewNode(NULL, _T("root"), DTNODE_DEFAULT);
+	DTsetAtt(adam, _T("Name"), _T("Adam"), DTATT_DEFAULT);
+	DTsetAtt(adam, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	eve = DTnewNode(adam, "Spouse", DTNODE_DEFAULT);
-	DTsetAtt(eve, "Name", "Eve", DTATT_DEFAULT);
-	DTsetAtt(eve, "Gender", "Female", DTATT_DEFAULT);
+	eve = DTnewNode(adam, _T("Spouse"), DTNODE_DEFAULT);
+	DTsetAtt(eve, _T("Name"), _T("Eve"), DTATT_DEFAULT);
+	DTsetAtt(eve, _T("Gender"), _T("Female"), DTATT_DEFAULT);
 
-	children = DTnewNode(adam, "Children", DTNODE_ARRAY);
-	DTsetAtt(children, "TestArrayAtts", "!!! THIS SHOULD NOT BE PRINTED !!!", DTATT_DEFAULT);
+	children = DTnewNode(adam, _T("Children"), DTNODE_ARRAY);
+	DTsetAtt(children, _T("TestArrayAtts"), _T("!!! THIS SHOULD NOT BE PRINTED !!!"), DTATT_DEFAULT);
 
-	cain = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(cain, "Name", "Cain", DTATT_DEFAULT);
-	DTsetAtt(cain, "Gender", "Male", DTATT_DEFAULT);
+	cain = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(cain, _T("Name"), _T("Cain"), DTATT_DEFAULT);
+	DTsetAtt(cain, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	abel = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(abel, "Name", "Abel", DTATT_DEFAULT);
-	DTsetAtt(abel, "Gender", "Male", DTATT_DEFAULT);
+	abel = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(abel, _T("Name"), _T("Abel"), DTATT_DEFAULT);
+	DTsetAtt(abel, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	seth = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(seth, "Name", "Seth", DTATT_DEFAULT);
-	DTsetAtt(seth, "Gender", "Male", DTATT_DEFAULT);
+	seth = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(seth, _T("Name"), _T("Seth"), DTATT_DEFAULT);
+	DTsetAtt(seth, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
 	// Cain
-	DTsetAtt(cain, "Spouse", "Aclima", DTATT_DEFAULT);
+	DTsetAtt(cain, _T("Spouse"), _T("Aclima"), DTATT_DEFAULT);
 
-	children = DTnewNode(cain, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Enoch", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(cain, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Enoch"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Irad", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(hier, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Irad"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Mehujael", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(hier, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Mehujael"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Methushael", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(hier, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Methushael"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
 	// Abel
-	DTsetAtt(abel, "Spouse", NULL, DTATT_DEFAULT);
-	children = DTnewNode(abel, "Children", DTNODE_ARRAY);
+	DTsetAtt(abel, _T("Spouse"), NULL, DTATT_DEFAULT);
+	children = DTnewNode(abel, _T("Children"), DTNODE_ARRAY);
 
 	// Seth
-	DTsetAtt(seth, "Spouse", "Azura", DTATT_DEFAULT);
+	DTsetAtt(seth, _T("Spouse"), _T("Azura"), DTATT_DEFAULT);
 
-	children = DTnewNode(seth, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Enos", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(seth, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Enos"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Cainan", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(hier, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Cainan"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
-	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
-	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
-	DTsetAtt(hier, "Name", "Mahalaleel", DTATT_DEFAULT);
-	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+	children = DTnewNode(hier, _T("Children"), DTNODE_ARRAY);
+	hier = DTnewNode(children, _T("Child"), DTNODE_DEFAULT);
+	DTsetAtt(hier, _T("Name"), _T("Mahalaleel"), DTATT_DEFAULT);
+	DTsetAtt(hier, _T("Gender"), _T("Male"), DTATT_DEFAULT);
 
 	// setup feature tests
-	DTsetAtt(adam, "TestJsonEscape", "Multi\nLine\nValue!\nSome slashes: \\\\\nAnd quotes: \"America...\"", DTATT_DEFAULT);
-	DTsetAttArray(adam, "TestAttArray", "one\0two\0three\0", DTATT_DEFAULT); // append new
+	DTsetAtt(adam, _T("TestJsonEscape"), _T("Multi\nLine\nValue!\nSome slashes: \\\\\nAnd quotes: \"America...\""), DTATT_DEFAULT);
+	DTsetAttArray(adam, _T("TestAttArray"), _T("one\0two\0three\0"), DTATT_DEFAULT); // append new
 
-	DTsetAttArray(adam, "TestAttArray2", "initial\0value\0", DTATT_DEFAULT); // append new
-	DTsetAttArray(adam, "TestAttArray2", "final\0value\0", DTATT_DEFAULT); // update existing
+	DTsetAttArray(adam, _T("TestAttArray2"), _T("initial\0value\0"), DTATT_DEFAULT); // append new
+	DTsetAttArray(adam, _T("TestAttArray2"), _T("final\0value\0"), DTATT_DEFAULT); // update existing
 
-	DTsetAtt(adam, "TestOverwrites", "Initial value", DTATT_DEFAULT);
-	DTsetAtt(adam, "TestOverwrites", "Updated value", DTATT_DEFAULT);
-	DTsetAtt(adam, "TestOverwrites", "Final value", DTATT_DEFAULT);
+	DTsetAtt(adam, _T("TestOverwrites"), _T("Initial value"), DTATT_DEFAULT);
+	DTsetAtt(adam, _T("TestOverwrites"), _T("Updated value"), DTATT_DEFAULT);
+	DTsetAtt(adam, _T("TestOverwrites"), _T("Final value"), DTATT_DEFAULT);
 
 	// print json
 	if (0 == strcmp(argv[1], "json"))

@@ -14,11 +14,11 @@ DTprintJsonValue(FILE *f, DTchar *val)
 	for (; val && *val; val++) {
 		switch (*val) {
 			case '"':
-				DTfprintf(f, "\\\"");
+				DTfprintf(f, _T("\\\""));
 				break;
 
 			case '\\':
-				DTfprintf(f, "\\\\");
+				DTfprintf(f, _T("\\\\"));
 				break;
 
 			case '\r':
@@ -26,11 +26,11 @@ DTprintJsonValue(FILE *f, DTchar *val)
 				break;
 
 			case '\n':
-				DTfprintf(f, "\\n");
+				DTfprintf(f, _T("\\n"));
 				break;
 
 			default:
-				DTfprintf(f, "%c", *val);
+				DTfprintf(f, _T("%c"), *val);
 				break;
 		}
 	}
@@ -67,12 +67,12 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 		} else if (0 != ((*att)->flags & DTATT_ARRAY)) { // multi-string array
 			DTfprintf(f, _T("["));
 			for (c = (*att)->value, n = c + DTstrlen(c) + 1; *c; c = n, n += DTstrlen(n) + 1) {
-				DTfprintf(f, "\"");
+				DTfprintf(f, _T("\""));
 				DTprintJsonValue(f, c);
-				DTfprintf(f, "\"");
+				DTfprintf(f, _T("\""));
 
 				if (*n) {
-					DTfprintf(f, ",");
+					DTfprintf(f, _T(","));
 					if (0 != (flags & DTOUT_WHITESPACE))
 						DTfprintf(f, _T(" "));
 				}

@@ -39,9 +39,9 @@ DTmstrlen(const DTchar *str)
 DTchar*
 DTmstrdup(const DTchar *str)
 {
-	size_t	size;
-	DTchar	*out;
-	int		i;
+	size_t			size = 0;
+	DTchar			*out = NULL;
+	unsigned int	i = 0;
 
 	// validate
 	if (NULL == str || '\0' == *str)

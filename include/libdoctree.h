@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#ifdef UNICODE
+#ifdef _UNICODE
 typedef wchar_t DTchar;
 #else
 typedef char DTchar;
