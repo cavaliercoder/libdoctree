@@ -1,6 +1,19 @@
 #include "common.h"
 #include "libdoctree.h"
 
+void*
+DTalloc(void *old, size_t size)
+{
+	void *new = NULL;
+
+	if (NULL == old)
+		new = calloc(1, size);
+	else
+		new = realloc(old, size);
+
+	return new;
+}
+
 /*
  * Allocate a new node. Returns NULL if out of memory.
  */
@@ -11,10 +24,9 @@ DTnewNode(DTnode *parent, const DTchar *label, int flags)
 	int		appendResult = 0;
 
 	// allocate
-	node = calloc(0, sizeof(DTnode));
-	if (NULL == node) {
+	node = DTalloc(NULL, sizeof(DTnode));
+	if (NULL == node)
 		return NULL;
-	}
 
 	node->flags = flags;
 
@@ -41,7 +53,7 @@ DTnewNode(DTnode *parent, const DTchar *label, int flags)
  * Append a node to another node.
  *
  * Returns the number of child nodes owned by the parent after the append
- * operation is complete or 0 on error.
+ * operation is complete or -1 on error.
  */
 int
 DTappendNode(DTnode *parent, DTnode *child)
@@ -50,16 +62,16 @@ DTappendNode(DTnode *parent, DTnode *child)
 
 	// check for NULLs
 	if (NULL == parent || NULL == child)
-		return 0;
+		return -1;
 
 	// count children
 	childCount = DTchildCount(parent);
 
 	// realloc child array with an extra slot for the new child and NULL
 	// terminator
-	parent->children = realloc(parent->children, sizeof(DTnode*) * (childCount + 2));
+	parent->children = DTalloc(parent->children, sizeof(DTnode*) * (childCount + 2));
 	if (NULL == parent->children)
-		return 0;
+		return -1;
 
 	// assign new child
 	parent->children[childCount] = child;
@@ -70,7 +82,7 @@ DTappendNode(DTnode *parent, DTnode *child)
 }
 
 /*
- * Return the number of children a node has.
+ * Return the number of children owned by a node.
  */
 int
 DTchildCount(DTnode *node)
@@ -90,14 +102,18 @@ DTchildCount(DTnode *node)
 void
 DTfreeNode(DTnode *node)
 {
-	DTnode **child = NULL;
+	DTnode		**child = NULL;
+	DTattribute	**att = NULL;
 
 	if (NULL == node)
 		return;
 
+	for (att = node->attributes; att && *att; att++)
+		DTfreeAtt(*att);
+	
 	for (child = node->children; child && *child; child++)
 		DTfreeNode(*child);
 		
-	free(node->label);	
-	free(node);
+	DTfree(node->label);	
+	DTfree(node);
 }
