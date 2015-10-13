@@ -99,14 +99,12 @@ main(int argc, const char* argv[])
 
 	// setup feature tests
 	DTsetAtt(adam, _T("TestJsonEscape"), _T("Multi\nLine\nValue!\nSome slashes: \\\\\nAnd quotes: \"America...\""), DTATT_DEFAULT);
-	DTsetAttArray(adam, _T("TestAttArray"), _T("one\0two\0three\0"), DTATT_DEFAULT); // append new
-
-	DTsetAttArray(adam, _T("TestAttArray2"), _T("initial\0value\0"), DTATT_DEFAULT); // append new
-	DTsetAttArray(adam, _T("TestAttArray2"), _T("final\0value\0"), DTATT_DEFAULT); // update existing
-
 	DTsetAtt(adam, _T("TestOverwrites"), _T("Initial value"), DTATT_DEFAULT);
 	DTsetAtt(adam, _T("TestOverwrites"), _T("Updated value"), DTATT_DEFAULT);
 	DTsetAtt(adam, _T("TestOverwrites"), _T("Final value"), DTATT_DEFAULT);
+	DTsetAttArray(adam, _T("TestAttArray"), _T("one\0two\0three\0"), DTATT_DEFAULT); // append new
+	DTsetAttArray(adam, _T("TestAttArray2"), _T("initial\0value\0"), DTATT_DEFAULT); // append new
+	DTsetAttArray(adam, _T("TestAttArray2"), _T("final\0value\0"), DTATT_DEFAULT); // update existing
 
 	// print json
 	if (0 == strcmp(argv[1], "json"))

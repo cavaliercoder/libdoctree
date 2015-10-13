@@ -14,7 +14,7 @@ DTnewNode(DTnode *parent, const DTchar *label, int flags)
 		return NULL;
 
 	// allocate
-	node = DTalloc(NULL, sizeof(DTnode));
+	node = (DTnode*) DTalloc(NULL, sizeof(DTnode));
 	if (NULL == node)
 		return NULL;
 

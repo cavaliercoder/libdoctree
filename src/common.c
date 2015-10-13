@@ -50,7 +50,7 @@ DTmstrdup(const DTchar *str)
 	size = DTmstrlen(str);
 
 	// allocate
-	out = DTalloc(out, size + 1);
+	out = DTalloc(out, sizeof(DTchar) * (size + 1));
 	if (NULL == out)
 		return NULL;
 
@@ -59,7 +59,7 @@ DTmstrdup(const DTchar *str)
 		out[i] = str[i];
 
 	// terminate
-	out[i+1] = '\0';
+	out[i] = '\0';
 
 	return out;
 }
