@@ -77,6 +77,19 @@ DTchildCount(DTnode *node)
 	return n;
 }
 
+
+int
+DTnodeHasChildren(DTnode *node)
+{
+	return (node->children && *node->children);
+}
+
+int
+DTnodeHasAtts(DTnode *node)
+{
+	return (node->attributes && *node->attributes);
+}
+
 /*
  * Append a node to another node.
  *

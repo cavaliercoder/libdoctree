@@ -5,32 +5,79 @@
 int
 main(int argc, const char* argv[])
 {
-	DTnode *doc = NULL, *node = NULL;
+	DTnode *hier, *children;
+	DTnode *adam, *eve, *cain, *abel, *seth;
 
-	doc = DTnewNode(NULL, "root", 0);
-	DTsetAtt(doc, "Name", "Adam", 0);
-	DTsetAtt(doc, "Gender", "Male", 0);
+	// Adam
+	adam = DTnewNode(NULL, "root", DTNODE_DEFAULT);
+	DTsetAtt(adam, "Name", "Adam", DTATT_DEFAULT);
+	DTsetAtt(adam, "Gender", "Male", DTATT_DEFAULT);
 
-	node = DTnewNode(doc, "child1", 0);
-	DTsetAtt(node, "Name", "Cane", 0);
-	DTsetAtt(node, "Gender", "Male", 0);
+	eve = DTnewNode(adam, "Spouse", DTNODE_DEFAULT);
+	DTsetAtt(eve, "Name", "Eve", DTATT_DEFAULT);
+	DTsetAtt(eve, "Gender", "Female", DTATT_DEFAULT);
 
-	DTnewNode(node, "grandchild1", 0);
-	
-	node = DTnewNode(doc, "child2", 0);
-	DTsetAtt(node, "Name", "Abel", 0);
-	DTsetAtt(node, "Gender", "Male", 0);
+	children = DTnewNode(adam, "Children", DTNODE_ARRAY);
+	DTsetAtt(children, "TestArrayAtts", "!!! THIS SHOULD NOT BE PRINTED !!!", DTATT_DEFAULT);
 
-	node = DTnewNode(node, "grandchild2", 0);
-	node = DTnewNode(node, "great-grandchild2", 0);
+	cain = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(cain, "Name", "Cain", DTATT_DEFAULT);
+	DTsetAtt(cain, "Gender", "Male", DTATT_DEFAULT);
 
-	DTsetAtt(node, "OverwriteTest", "Initial value", 0);
-	DTsetAtt(node, "OverwriteTest", "Updated value", 0);
-	DTsetAtt(node, "OverwriteTest", "Final value", 0);
+	abel = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(abel, "Name", "Abel", DTATT_DEFAULT);
+	DTsetAtt(abel, "Gender", "Male", DTATT_DEFAULT);
 
-	DTsetAtt(node, "NullTest", NULL, 0);
+	seth = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(seth, "Name", "Seth", DTATT_DEFAULT);
+	DTsetAtt(seth, "Gender", "Male", DTATT_DEFAULT);
 
-	DTprintJson(stdout, doc, 0);
+	// Cain
+	DTsetAtt(cain, "Spouse", "Aclima", DTATT_DEFAULT);
 
-	DTfreeNode(doc);
+	children = DTnewNode(cain, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Enoch", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Irad", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Mehujael", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Methushael", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	// Abel
+	DTsetAtt(abel, "Spouse", NULL, DTATT_DEFAULT);
+	children = DTnewNode(abel, "Children", DTNODE_ARRAY);
+
+	// Seth
+	DTsetAtt(seth, "Spouse", "Azura", DTATT_DEFAULT);
+
+	children = DTnewNode(seth, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Enos", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Cainan", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	children = DTnewNode(hier, "Children", DTNODE_ARRAY);
+	hier = DTnewNode(children, "Child", DTNODE_DEFAULT);
+	DTsetAtt(hier, "Name", "Mahalaleel", DTATT_DEFAULT);
+	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
+
+	// print
+	DTprintJson(stdout, adam, DTJSON_WHITESPACE);
+	DTfreeNode(adam);
 }
