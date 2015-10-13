@@ -16,6 +16,11 @@
 #define DTfprintf	fwprintf
 #define DTstrlen	wcslen
 #define DTstrcmp	wcscmp
+
+#ifndef _wcsdup
+#define _wcsdup		wcsdup
+#endif 
+
 #define DTstrdup	_wcsdup
 
 #else // !UNICODE
@@ -27,6 +32,11 @@
 #define DTfprintf	fprintf
 #define DTstrlen	strlen
 #define DTstrcmp	strcmp
+
+#ifndef _strdup
+#define _strdup		strdup
+#endif 
+
 #define DTstrdup	_strdup
 
 #endif // UNICODE
