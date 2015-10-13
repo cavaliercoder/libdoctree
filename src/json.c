@@ -18,6 +18,7 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 				DTfprintf(f, _T("  "));
 
 		// print attribute name
+		// TODO: escape JSON in attribute names
 		DTfprintf(f, _T("\"%s\":"), (*att)->key);
 
 		// print space after attribute name
@@ -28,6 +29,7 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 		if (NULL == (*att)->value)
 			DTfprintf(f, _T("null"));
 		else
+			// TODO: escape JSON in attribute values
 			DTfprintf(f, _T("\"%s\""), (*att)->value);
 
 		// print comma
@@ -52,6 +54,7 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 	else
 		DTfprintf(f, _T("{"));
 
+	// print new line after object start
 	if (0 != (flags & DTJSON_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
 		DTfprintf(f, JS_NEWLINE);
 
@@ -68,6 +71,7 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 
 		if (0 == (node->flags & DTNODE_ARRAY)) {
 			// print object name
+			// TODO: escape JSON in object names
 			DTfprintf(f, _T("\"%s\":"), (*child)->label);
 
 			// print space after node name
@@ -106,6 +110,10 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 void
 DTprintJson(FILE *f, DTnode *node, int flags)
 {
+	// TODO: use iteration instead of recursion in DTprintJson to prevent stack
+	// TODO: overflow
+
+	// print root node and descendants
 	DTprintJsonNode(f, node, flags, 0);
 
 	// always end with a new line
