@@ -6,6 +6,34 @@
 #define JS_NEWLINE		_T("\n")
 
 static void
+DTprintJsonValue(FILE *f, DTchar *val)
+{
+	for (; val && *val; val++) {
+		switch (*val) {
+			case '"':
+				DTfprintf(f, "\\\"");
+				break;
+
+			case '\\':
+				DTfprintf(f, "\\\\");
+				break;
+
+			case '\r':
+				// skip
+				break;
+
+			case '\n':
+				DTfprintf(f, "\\n");
+				break;
+
+			default:
+				DTfprintf(f, "%c", *val);
+				break;
+		}
+	}
+}
+
+static void
 DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 {
 	int			i = 0;
@@ -13,31 +41,34 @@ DTprintJsonAtts(FILE *f, DTnode *node, int flags, int indent)
 
 	for (att = node->attributes; att && *att; att++) {
 		// print line indent
-		if (0 != (flags & DTJSON_WHITESPACE))
+		if (0 != (flags & DTOUT_WHITESPACE))
 			for (i = 0; i < indent + 1; i++)
 				DTfprintf(f, _T("  "));
 
 		// print attribute name
-		// TODO: escape JSON in attribute names
-		DTfprintf(f, _T("\"%s\":"), (*att)->key);
+		DTfprintf(f, _T("\""));
+		DTprintJsonValue(f, (*att)->key);
+		DTfprintf(f, _T("\":"));
 
 		// print space after attribute name
-		if (0 != (flags & DTJSON_WHITESPACE))
+		if (0 != (flags & DTOUT_WHITESPACE))
 			DTfprintf(f, _T(" "));
 
 		// print attribute value
 		if (NULL == (*att)->value)
 			DTfprintf(f, _T("null"));
-		else
-			// TODO: escape JSON in attribute values
-			DTfprintf(f, _T("\"%s\""), (*att)->value);
+		else {
+			DTfprintf(f, _T("\""));
+			DTprintJsonValue(f, (*att)->value);
+			DTfprintf(f, _T("\""));
+		}
 
 		// print comma
 		if (NULL != *(att + 1) || 0 < DTchildCount(node))
 			DTfprintf(f, _T(","));
 
 		// print line break
-		if (0 != (flags & DTJSON_WHITESPACE))
+		if (0 != (flags & DTOUT_WHITESPACE))
 			DTfprintf(f, JS_NEWLINE);
 	}
 }
@@ -55,7 +86,7 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 		DTfprintf(f, _T("{"));
 
 	// print new line after object start
-	if (0 != (flags & DTJSON_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
+	if (0 != (flags & DTOUT_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
 		DTfprintf(f, JS_NEWLINE);
 
 	// print attributes for objects
@@ -65,17 +96,18 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 	// print children
 	for (child = node->children; child && *child; child++) {
 		// print line indent
-		if (0 != (flags & DTJSON_WHITESPACE))
+		if (0 != (flags & DTOUT_WHITESPACE))
 			for (i = 0; i < indent + 1; i++)
 				DTfprintf(f, _T("  "));
 
 		if (0 == (node->flags & DTNODE_ARRAY)) {
 			// print object name
-			// TODO: escape JSON in object names
-			DTfprintf(f, _T("\"%s\":"), (*child)->label);
+			DTfprintf(f, _T("\""));
+			DTprintJsonValue(f, (*child)->label);
+			DTfprintf(f, _T("\":"));
 
 			// print space after node name
-			if (0 != (flags & DTJSON_WHITESPACE))
+			if (0 != (flags & DTOUT_WHITESPACE))
 				DTfprintf(f, _T(" "));
 		}
 
@@ -87,12 +119,12 @@ DTprintJsonNode(FILE *f, DTnode *node, int flags, int indent)
 			DTfprintf(f, _T(","));
 
 		// print line break
-		if (0 != (flags & DTJSON_WHITESPACE))
+		if (0 != (flags & DTOUT_WHITESPACE))
 			DTfprintf(f, JS_NEWLINE);
 	}
 	
 	// print indent before object end
-	if (0 != (flags & DTJSON_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
+	if (0 != (flags & DTOUT_WHITESPACE) && (DTnodeHasAtts(node) || DTnodeHasChildren(node)))
 		for (i = 0; i < indent; i++)
 			DTfprintf(f, _T("  "));
 

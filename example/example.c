@@ -12,6 +12,7 @@ main(int argc, const char* argv[])
 	adam = DTnewNode(NULL, "root", DTNODE_DEFAULT);
 	DTsetAtt(adam, "Name", "Adam", DTATT_DEFAULT);
 	DTsetAtt(adam, "Gender", "Male", DTATT_DEFAULT);
+	DTsetAtt(adam, "TestJsonEscape", "Multi\nLine\nValue!\nSome slashes: \\\\\nAnd quotes: \"America...\"", DTATT_DEFAULT);
 
 	eve = DTnewNode(adam, "Spouse", DTNODE_DEFAULT);
 	DTsetAtt(eve, "Name", "Eve", DTATT_DEFAULT);
@@ -78,6 +79,6 @@ main(int argc, const char* argv[])
 	DTsetAtt(hier, "Gender", "Male", DTATT_DEFAULT);
 
 	// print
-	DTprintJson(stdout, adam, DTJSON_WHITESPACE);
+	DTprintJson(stdout, adam, DTOUT_WHITESPACE);
 	DTfreeNode(adam);
 }

@@ -48,7 +48,8 @@ void			DTprintJson(FILE *f, DTnode *node, int flags);
 // attribute flags
 #define DTATT_DEFAULT		0x0
 
-// json flags
-#define DTJSON_WHITESPACE	0x1 // print whitespace
+// output flags
+#define DTOUT_DEFAULT		0x0
+#define DTOUT_WHITESPACE	0x1 // print whitespace
 
 #endif // LIBDOCTREE_H
