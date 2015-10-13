@@ -136,6 +136,7 @@ DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 	} else {
 		// update existing attribute
 		att->flags = flags;
+		
 		DTfree(att->value);
 		att->value = DTstrdup(val);
 		if (NULL == att->value)

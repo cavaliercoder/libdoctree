@@ -8,7 +8,6 @@ DTnode *
 DTnewNode(DTnode *parent, const DTchar *label, int flags)
 {
 	DTnode	*node = NULL;
-	int		appendResult = 0;
 
 	// allocate
 	node = DTalloc(NULL, sizeof(DTnode));
@@ -20,20 +19,58 @@ DTnewNode(DTnode *parent, const DTchar *label, int flags)
 	// duplicate and assign label
 	node->label = DTstrdup(label);
 	if (NULL == node->label) {
-		free(node);
+		DTfreeNode(node);
 		return NULL;
 	}
 
 	// assign parent
 	if (NULL != parent) {
-		appendResult = DTappendNode(parent, node);
-		if (0 == appendResult) {
-			free(node);
+		if (-1 == DTappendNode(parent, node)) {
+			DTfreeNode(node);
 			return NULL;
 		}
 	}
 
 	return node;
+}
+
+/*
+ * Free a node and all of its descendants.
+ */
+void
+DTfreeNode(DTnode *node)
+{
+	DTnode		**child = NULL;
+	DTattribute	**att = NULL;
+
+	if (NULL == node)
+		return;
+
+	for (att = node->attributes; att && *att; att++)
+		DTfreeAtt(*att);
+	
+	for (child = node->children; child && *child; child++)
+		DTfreeNode(*child);
+	
+	if (NULL != node->label)
+		DTfree(node->label);
+
+	DTfree(node);
+}
+
+/*
+ * Return the number of children owned by a node.
+ */
+int
+DTchildCount(DTnode *node)
+{
+	int		n = 0;
+	DTnode	**child = NULL;
+
+	for (child = node->children; child && *child; child++)
+		n++;
+
+	return n;
 }
 
 /*
@@ -66,41 +103,4 @@ DTappendNode(DTnode *parent, DTnode *child)
 	child->parent = parent;
 
 	return childCount + 1;
-}
-
-/*
- * Return the number of children owned by a node.
- */
-int
-DTchildCount(DTnode *node)
-{
-	int		n = 0;
-	DTnode	**child = NULL;
-
-	for (child = node->children; child && *child; child++)
-		n++;
-
-	return n;
-}
-
-/*
- * Free a node and all of its descendants.
- */
-void
-DTfreeNode(DTnode *node)
-{
-	DTnode		**child = NULL;
-	DTattribute	**att = NULL;
-
-	if (NULL == node)
-		return;
-
-	for (att = node->attributes; att && *att; att++)
-		DTfreeAtt(*att);
-	
-	for (child = node->children; child && *child; child++)
-		DTfreeNode(*child);
-		
-	DTfree(node->label);	
-	DTfree(node);
 }
