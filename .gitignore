@@ -24,3 +24,6 @@ stamp-h1
 *.so
 *.tar.gz
 example/example
+*/Debug/
+*.sdf
+*.filters
