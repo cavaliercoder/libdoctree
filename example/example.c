@@ -1,12 +1,24 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "libdoctree.h"
+
+static void
+usage(FILE *f)
+{
+	fprintf(f, "usage: example [xml | json]\n");
+}
 
 int
 main(int argc, const char* argv[])
 {
 	DTnode *hier, *children;
 	DTnode *adam, *eve, *cain, *abel, *seth;
+
+	if (argc < 2) {
+		usage(stderr);
+		exit(1);
+	}
 
 	// Adam
 	adam = DTnewNode(NULL, "root", DTNODE_DEFAULT);
@@ -88,7 +100,16 @@ main(int argc, const char* argv[])
 	DTsetAtt(adam, "TestOverwrites", "Updated value", DTATT_DEFAULT);
 	DTsetAtt(adam, "TestOverwrites", "Final value", DTATT_DEFAULT);
 
-	// print
-	DTprintJson(stdout, adam, DTOUT_WHITESPACE);
+	// print json
+	if (0 == strcmp(argv[1], "json"))
+		DTprintJson(stdout, adam, DTOUT_WHITESPACE);
+	else if (0 ==strcmp(argv[1], "xml"))
+		DTprintXml(stdout, adam, DTOUT_WHITESPACE);
+	else {
+		fprintf(stderr, "Invalid document format: %s\n", argv[1]);
+		exit(1);
+	}
+
+	// clean up
 	DTfreeNode(adam);
 }
