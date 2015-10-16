@@ -1,5 +1,5 @@
 #include "common.h"
-#include "libdoctree.h"
+#include "doctree.h"
 
 static void
 DTprintXmlNode(FILE *f, DTnode *node, int flags, int indent)

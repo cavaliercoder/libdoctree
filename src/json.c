@@ -1,5 +1,5 @@
 #include "common.h"
-#include "libdoctree.h"
+#include "doctree.h"
 
 #define JS_SPACE		_T(" ")
 #define JS_INDENT		_T("  ")

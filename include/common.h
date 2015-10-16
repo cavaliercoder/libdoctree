@@ -1,20 +1,21 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#ifdef _WIN32
 // ignore deprecated posix functions on Windows
 #define _CRT_NONSTDC_NO_DEPRECATE
+#endif
 
-#include "libdoctree.h"
+#include "doctree.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
+/*
+ * Platform character functions
+ */
 #ifdef _UNICODE
-
-#ifndef _T
-#define _T(s)		L ## s
-#endif
 
 #define DTfputs		fputws
 #define DTfprintf	fwprintf
@@ -24,10 +25,6 @@
 
 #else // !UNICODE
 
-#ifndef _T
-#define _T(s)		s
-#endif
-
 #define DTfputs		fputs
 #define DTfprintf	fprintf
 #define DTstrlen	strlen
@@ -36,6 +33,9 @@
 
 #endif // UNICODE
 
+/*
+ * Functions
+ */
 size_t	DTmstrlen(const DTchar *str);
 DTchar*	DTmstrdup(const DTchar *str);
 

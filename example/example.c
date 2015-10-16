@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "libdoctree.h"
+#include "doctree.h"
 
 #ifndef _T
 #ifdef _UNICODE

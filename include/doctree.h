@@ -5,8 +5,18 @@
 
 #ifdef _UNICODE
 typedef wchar_t DTchar;
+
+#ifndef _T
+#define _T(s)		L ## s
+#endif
+
 #else
 typedef char DTchar;
+
+#ifndef _T
+#define _T(s)		s
+#endif
+
 #endif
 
 typedef struct _DTnode {

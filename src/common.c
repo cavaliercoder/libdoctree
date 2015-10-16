@@ -1,5 +1,5 @@
 #include "common.h"
-#include "libdoctree.h"
+#include "doctree.h"
 
 /*
  * Allocate or reallocate memory initialized to zero.
