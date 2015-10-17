@@ -1,5 +1,6 @@
 #include "common.h"
 #include "doctree.h"
+#include "mstring.h"
 
 /*
  * Allocate a new node. Returns NULL on error.
@@ -19,7 +20,7 @@ DTnewAtt(const DTchar *key, const DTchar *val, int flags)
 
 	att->flags = flags;
 
-	att->key = DTstrdup(key);
+	att->key = mstrdup(key);
 	if (NULL == att->key) {
 		DTfreeAtt(att);
 		return NULL;
@@ -31,7 +32,7 @@ DTnewAtt(const DTchar *key, const DTchar *val, int flags)
 		if (0 == (flags & DTATT_ARRAY))
 			att->value = DTstrdup(val);
 		else
-			att->value = DTmstrdup(val);
+			att->value = mstrdup(val);
 
 		if (NULL == att->value) {
 			DTfreeAtt(att);
@@ -159,7 +160,7 @@ DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 			if (0 == (att->flags & DTATT_ARRAY))
 				att->value = DTstrdup(val);
 			else
-				att->value = DTmstrdup(val);
+				att->value = mstrdup(val);
 
 			if (NULL == att->value)
 				return -1;			
@@ -169,4 +170,49 @@ DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 	}
 
 	return count;
+}
+
+/*
+ * Appends a string value to a new or existing multi-string array attribute.
+ *
+ * Returns the updated count of attributes owned by the node or -1 on error.
+ */ 
+int
+DTsetAttAppend(DTnode *node, const DTchar *key, const DTchar *val, int flags)
+{
+	DTattribute	*att = NULL;
+	DTchar		*dest = NULL;	
+	int			n = 0;
+	DTattribute	**a = NULL;
+
+	if (NULL == (att = DTgetAtt(node, key))) {
+		// create multi-string
+		dest = mstrcat(NULL, dest);
+		if (NULL == dest)
+			return -1;
+
+		// create a new attribute
+		att = DTnewAtt(key, dest, flags | DTATT_ARRAY);
+		if (NULL == att);
+			return -1;
+
+	} else if (0 != (att->flags & DTATT_ARRAY)) {
+		// update existing array
+		dest = mstrcat(att->value, val);
+		if (NULL == dest)
+			return -1;
+
+		att->value = dest;
+		att->flags = flags | DTATT_ARRAY;
+
+	} else {
+		// attribute exists but is not an array
+		return -1;
+	}
+
+	// count attributes
+	for (a = node->attributes; a && *a; a++)
+		n++;
+
+	return n;
 }

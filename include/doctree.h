@@ -48,9 +48,7 @@ int				DTappendAtt(DTnode *node, DTattribute *att);
 DTattribute		*DTgetAtt(DTnode *node, const DTchar *key);
 int				DTsetAtt(DTnode *node, const DTchar *key, const DTchar *val, int flags);
 #define			DTsetAttArray(node, key, val, flags)	DTsetAtt(node, key, val, DTATT_ARRAY | flags)
-
-int				DTmstrncat(DTchar *mstr, const DTchar *str, size_t size);
-DTchar*			DTmstrcat(const DTchar *mstr, const DTchar *str);
+int				DTsetAttAppend(DTnode *node, const DTchar *key, const DTchar *val, int flags);
 
 void			DTprintXml(FILE *f, DTnode *node, int flags);
 void			DTprintJson(FILE *f, DTnode *node, int flags);

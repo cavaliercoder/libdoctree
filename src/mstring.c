@@ -125,6 +125,15 @@ mstrncat(char *dest, const char *s, const size_t size)
 	return i;
 }
 
+/*
+ * Appends a string to a multi-string array.
+ * If the destination array is too small, a new array is allocated and a pointer
+ * to the array is returned. In this case, the old memory location is freed.
+ *
+ * If dest is NULL, a new multi-string array is allocated.
+ *
+ * Returns NULL on error.
+ */ 
 char*
 mstrcat(char *dest, const char *s)
 {
