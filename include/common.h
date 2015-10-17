@@ -7,6 +7,7 @@
 #endif
 
 #include "doctree.h"
+#include "mstring.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,9 +37,6 @@
 /*
  * Functions
  */
-size_t	DTmstrlen(const DTchar *str);
-DTchar*	DTmstrdup(const DTchar *str);
-
 void	*DTalloc(void *old, size_t size);
 #define	DTfree		free
 
