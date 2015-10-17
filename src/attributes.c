@@ -193,7 +193,7 @@ DTsetAttAppend(DTnode *node, const DTchar *key, const DTchar *val, int flags)
 
 		// create a new attribute
 		att = DTnewAtt(key, dest, flags | DTATT_ARRAY);
-		if (NULL == att);
+		if (NULL == att)
 			return -1;
 
 	} else if (0 != (att->flags & DTATT_ARRAY)) {
